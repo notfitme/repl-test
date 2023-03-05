@@ -1,26 +1,16 @@
 const express = require('express')
 const https = require('https')
-
+const fs = require('fs');
+const path = require('path');
 const app = express()
-
+const file = fs.readFileSync(path.join(__dirname,'pinia.js'), "utf8")
 
 app.get('/pinia.es.js', (req, res) => {
     res.set('access-control-allow-origin','*')
     res.set('content-type', 'application/javascript; charset=utf-8')
-    https.get('https://esm.sh/pinia@2.0.32', (resp) => {
-        let data = ''
-        resp.on('data', (chumk) => {
-            data += chumk
-        })
-        resp.on('end', () => {
-            
-                setTimeout(() => {
-                    res.send(Buffer.from(data))
-                }, Math.random()*4000)
-        })
-    }).on('error', (error) => {
-
-    })
+    setTimeout(() => {
+        res.send(Buffer.from(file))
+    }, 2000)
 })
 
 
